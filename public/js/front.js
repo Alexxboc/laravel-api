@@ -5204,10 +5204,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getAllPosts: function getAllPosts() {
+    getAllPosts: function getAllPosts(postPage) {
       var _this = this;
 
-      axios.get("/api/posts").then(function (response) {
+      axios.get("/api/posts", {
+        params: {
+          page: postPage
+        }
+      }).then(function (response) {
         console.log(response);
         _this.postsResponse = response.data.data;
       })["catch"](function (e) {
@@ -5216,7 +5220,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.getAllPosts();
+    this.getAllPosts(1);
   }
 });
 
@@ -41533,7 +41537,7 @@ var render = function () {
                 _c("div", { staticClass: "product card" }, [
                   _c("img", {
                     attrs: {
-                      src: "storage/ + post.cover_image",
+                      src: "storage/" + post.cover_image,
                       alt: post.title,
                     },
                   }),
@@ -54074,7 +54078,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/Laravel/laravel-many-to-many/resources/js/front.js */"./resources/js/front.js");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/Laravel/laravel-api/resources/js/front.js */"./resources/js/front.js");
 
 
 /***/ })

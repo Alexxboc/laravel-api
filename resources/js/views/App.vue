@@ -9,7 +9,7 @@
         <div class="row row-cols-3">
           <div class="col" v-for="post in postsResponse" :key="post.id">
             <div class="product card">
-                <img :src="'storage/ + post.cover_image'" :alt="post.title">
+                <img :src="'storage/app/public/' + post.cover_image" :alt="post.title">
                 <div class="card-body">
                   <h3>{{post.title}}</h3>
                   <p>{{post.content}}</p>
@@ -67,9 +67,13 @@ export default {
     };
   },
   methods: {
-    getAllPosts() {
+    getAllPosts(postPage) {
       axios
-        .get("/api/posts")
+        .get("/api/posts", {
+          params: {
+            page: postPage
+          }
+        })
         .then((response) => {
           console.log(response);
           this.postsResponse = response.data.data;
@@ -80,7 +84,7 @@ export default {
     },
   },
   mounted() {
-    this.getAllPosts();
+    this.getAllPosts(1);
   }
 };
 </script>
