@@ -41600,10 +41600,10 @@ var render = function () {
               _c("div", { staticClass: "container" }, [
                 _c(
                   "div",
-                  { staticClass: "row row-cols-3" },
+                  { staticClass: "row row-cols-3 gy-4" },
                   _vm._l(_vm.postsResponse.data, function (post) {
                     return _c("div", { key: post.id, staticClass: "col" }, [
-                      _c("div", { staticClass: "product card" }, [
+                      _c("div", { staticClass: "product card h-100" }, [
                         _c("img", {
                           attrs: {
                             src: "storage/" + post.cover_image,

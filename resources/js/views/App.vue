@@ -8,13 +8,13 @@
         <div class="col-10">
           <section class="posts">
             <div class="container">
-              <div class="row row-cols-3">
+              <div class="row row-cols-3 gy-4">
                 <div
                   class="col"
                   v-for="post in postsResponse.data"
                   :key="post.id"
                 >
-                  <div class="product card">
+                  <div class="product card h-100">
                     <img
                       :src="'storage/' + post.cover_image"
                       :alt="post.title"
