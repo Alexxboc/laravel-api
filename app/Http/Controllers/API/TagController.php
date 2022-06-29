@@ -9,7 +9,7 @@ use App\Models\Tag;
 class TagController extends Controller
 {
     public function index() {
-        $tags = Tag::with(['tags', 'category'])->orderByDesc('id')->paginate(9);
+        $tags = Tag::all();
     
         return $tags;
     }

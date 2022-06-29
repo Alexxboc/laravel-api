@@ -5192,6 +5192,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "App",
@@ -5200,7 +5242,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      postsResponse: ""
+      postsResponse: "",
+      categoriesResponse: "",
+      tagsResponse: ""
     };
   },
   methods: {
@@ -5212,8 +5256,28 @@ __webpack_require__.r(__webpack_exports__);
           page: postPage
         }
       }).then(function (response) {
+        //console.log(response);
+        _this.postsResponse = response.data;
+      })["catch"](function (e) {
+        console.error(e);
+      });
+    },
+    getAllCategories: function getAllCategories() {
+      var _this2 = this;
+
+      axios.get("/api/categories").then(function (response) {
         console.log(response);
-        _this.postsResponse = response.data.data;
+        _this2.categoriesResponse = response.data;
+      })["catch"](function (e) {
+        console.error(e);
+      });
+    },
+    getAllTags: function getAllTags() {
+      var _this3 = this;
+
+      axios.get("/api/tags").then(function (response) {
+        console.log(response);
+        _this3.tagsResponse = response.data;
       })["catch"](function (e) {
         console.error(e);
       });
@@ -5221,6 +5285,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getAllPosts(1);
+    this.getAllCategories();
+    this.getAllTags();
   }
 });
 
@@ -41527,61 +41593,113 @@ var render = function () {
     [
       _c("work-in-progress"),
       _vm._v(" "),
-      _c("section", { staticClass: "posts" }, [
-        _c("div", { staticClass: "container" }, [
-          _c(
-            "div",
-            { staticClass: "row row-cols-3" },
-            _vm._l(_vm.postsResponse, function (post) {
-              return _c("div", { key: post.id, staticClass: "col" }, [
-                _c("div", { staticClass: "product card" }, [
-                  _c("img", {
-                    attrs: {
-                      src: "storage/" + post.cover_image,
-                      alt: post.title,
-                    },
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-10" }, [
+            _c("section", { staticClass: "posts" }, [
+              _c("div", { staticClass: "container" }, [
+                _c(
+                  "div",
+                  { staticClass: "row row-cols-3" },
+                  _vm._l(_vm.postsResponse.data, function (post) {
+                    return _c("div", { key: post.id, staticClass: "col" }, [
+                      _c("div", { staticClass: "product card" }, [
+                        _c("img", {
+                          attrs: {
+                            src: "storage/" + post.cover_image,
+                            alt: post.title,
+                          },
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("h3", [_vm._v(_vm._s(post.title))]),
+                          _vm._v(" "),
+                          _c("p", [_vm._v(_vm._s(post.content))]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "card-footer" }, [
+                          post.category
+                            ? _c("span", [
+                                _c("strong", [_vm._v("Category:")]),
+                                _vm._v(_vm._s(post.category.name)),
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.tags.length > 0
+                            ? _c("div", { staticClass: "tags" }, [
+                                _c(
+                                  "ul",
+                                  [
+                                    _c("strong", [_vm._v("Tags:")]),
+                                    _vm._v(" "),
+                                    _vm._l(post.tags, function (tag) {
+                                      return _c("li", { key: tag.id }, [
+                                        _vm._v(
+                                          "\n                          " +
+                                            _vm._s(tag.name) +
+                                            "\n                        "
+                                        ),
+                                      ])
+                                    }),
+                                  ],
+                                  2
+                                ),
+                              ])
+                            : _vm._e(),
+                        ]),
+                      ]),
+                    ])
                   }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card-body" }, [
-                    _c("h3", [_vm._v(_vm._s(post.title))]),
-                    _vm._v(" "),
-                    _c("p", [_vm._v(_vm._s(post.content))]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card-footer" }, [
-                    post.category
-                      ? _c("span", [
-                          _c("strong", [_vm._v("Category:")]),
-                          _vm._v(_vm._s(post.category.name)),
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    post.tags.length > 0
-                      ? _c("div", { staticClass: "tags" }, [
-                          _c(
-                            "ul",
-                            [
-                              _c("strong", [_vm._v("Tags:")]),
-                              _vm._v(" "),
-                              _vm._l(post.tags, function (tag) {
-                                return _c("li", { key: tag.id }, [
-                                  _vm._v(_vm._s(tag.name)),
-                                ])
-                              }),
-                            ],
-                            2
-                          ),
-                        ])
-                      : _vm._e(),
-                  ]),
-                ]),
-              ])
-            }),
-            0
-          ),
+                  0
+                ),
+              ]),
+              _vm._v(" "),
+              _vm._m(0),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-2" }, [
+            _c("aside", [
+              _c("div", { staticClass: "categories widget" }, [
+                _c("h2", [_vm._v("All Categories")]),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  { staticClass: "list-unstyled" },
+                  _vm._l(_vm.categoriesResponse, function (category) {
+                    return _c("li", { key: category.id }, [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(category.name) +
+                          "\n              "
+                      ),
+                    ])
+                  }),
+                  0
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "tags widget" }, [
+                _c("h2", [_vm._v("All Tags")]),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  { staticClass: "list-unstyled" },
+                  _vm._l(_vm.tagsResponse, function (tag) {
+                    return _c("li", { key: tag.id }, [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(tag.name) +
+                          "\n              "
+                      ),
+                    ])
+                  }),
+                  0
+                ),
+              ]),
+            ]),
+          ]),
         ]),
-        _vm._v(" "),
-        _vm._m(0),
       ]),
     ],
     1

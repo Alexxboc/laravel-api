@@ -11,7 +11,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with(['tags', 'category'])->orderByDesc('id')->paginate(6);
+        $posts = Post::with(['tags', 'category'])->orderByDesc('id')->paginate(9);
 
         return $posts;
     }

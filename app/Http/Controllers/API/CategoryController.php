@@ -9,7 +9,7 @@ use App\Models\Category;
 class CategoryController extends Controller
 {
     public function index() {
-        $categories = Category::with(['tags', 'category'])->orderByDesc('id')->paginate(9);
+        $categories = Category::all();
     
         return $categories;
     }
