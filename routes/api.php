@@ -21,3 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // Scorciatoia con le relazioni e paginazione
 Route::get('posts', 'API\PostController@index');
+Route::get('posts', 'API\CategoryController@index');
+Route::get('tags', 'API\TagController@index');
