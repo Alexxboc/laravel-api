@@ -5234,6 +5234,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "App",
@@ -41654,7 +41675,98 @@ var render = function () {
                 ),
               ]),
               _vm._v(" "),
-              _vm._m(0),
+              _c("nav", { attrs: { "aria-label": "Page navigation" } }, [
+                _c(
+                  "ul",
+                  { staticClass: "pagination justify-content-center" },
+                  [
+                    _vm.postsResponse.current_page > 1
+                      ? _c("li", { staticClass: "page-item" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "page-link",
+                              attrs: { href: "#", "aria-label": "Previous" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.getAllPosts(
+                                    _vm.postsResponse.current_page - 1
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c("span", { attrs: { "aria-hidden": "true" } }, [
+                                _vm._v("«"),
+                              ]),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "visually-hidden" }, [
+                                _vm._v("Previous"),
+                              ]),
+                            ]
+                          ),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._l(_vm.postsResponse.last_page, function (page) {
+                      return _c(
+                        "li",
+                        {
+                          key: page,
+                          class: {
+                            "page-item": true,
+                            active: _vm.postsResponse.current_page == page,
+                          },
+                        },
+                        [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "page-link",
+                              attrs: { href: "#" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.getAllPosts(page)
+                                },
+                              },
+                            },
+                            [_vm._v(_vm._s(page))]
+                          ),
+                        ]
+                      )
+                    }),
+                    _vm._v(" "),
+                    _vm.postsResponse.current_page < _vm.postsResponse.last_page
+                      ? _c("li", { staticClass: "page-item" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "page-link",
+                              attrs: { href: "#", "aria-label": "Next" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.getAllPosts(
+                                    _vm.postsResponse.current_page + 1
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c("span", { attrs: { "aria-hidden": "true" } }, [
+                                _vm._v("»"),
+                              ]),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "visually-hidden" }, [
+                                _vm._v("Next"),
+                              ]),
+                            ]
+                          ),
+                        ])
+                      : _vm._e(),
+                  ],
+                  2
+                ),
+              ]),
             ]),
           ]),
           _vm._v(" "),
@@ -41705,56 +41817,7 @@ var render = function () {
     1
   )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("nav", { attrs: { "aria-label": "Page navigation" } }, [
-      _c("ul", { staticClass: "pagination justify-content-center" }, [
-        _c("li", { staticClass: "page-item disabled" }, [
-          _c(
-            "a",
-            {
-              staticClass: "page-link",
-              attrs: { href: "#", "aria-label": "Previous" },
-            },
-            [
-              _c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("«")]),
-              _vm._v(" "),
-              _c("span", { staticClass: "visually-hidden" }, [
-                _vm._v("Previous"),
-              ]),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "page-item active" }, [
-          _c("a", { staticClass: "page-link", attrs: { href: "#" } }),
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "page-item" }, [
-          _c("a", { staticClass: "page-link", attrs: { href: "#" } }),
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "page-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "page-link",
-              attrs: { href: "#", "aria-label": "Next" },
-            },
-            [
-              _c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("»")]),
-              _vm._v(" "),
-              _c("span", { staticClass: "visually-hidden" }, [_vm._v("Next")]),
-            ]
-          ),
-        ]),
-      ]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

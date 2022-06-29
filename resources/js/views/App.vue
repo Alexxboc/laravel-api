@@ -47,18 +47,39 @@
             <!-- /.container -->
             <nav aria-label="Page navigation">
               <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" aria-label="Previous">
+                <li class="page-item" v-if="postsResponse.current_page > 1">
+                  <a
+                    class="page-link"
+                    href="#"
+                    aria-label="Previous"
+                    @click="getAllPosts(postsResponse.current_page - 1)"
+                  >
                     <span aria-hidden="true">&laquo;</span>
                     <span class="visually-hidden">Previous</span>
                   </a>
                 </li>
-                <li class="page-item active">
-                  <a class="page-link" href="#"></a>
+                <li
+                  :class="{
+                    'page-item': true,
+                    active: postsResponse.current_page == page,
+                  }"
+                  v-for="page in postsResponse.last_page"
+                  :key="page"
+                >
+                  <a class="page-link" href="#" @click="getAllPosts(page)">{{
+                    page
+                  }}</a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#"></a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Next">
+                <li
+                  class="page-item"
+                  v-if="postsResponse.current_page < postsResponse.last_page"
+                >
+                  <a
+                    class="page-link"
+                    href="#"
+                    aria-label="Next"
+                    @click="getAllPosts(postsResponse.current_page + 1)"
+                  >
                     <span aria-hidden="true">&raquo;</span>
                     <span class="visually-hidden">Next</span>
                   </a>
