@@ -37,384 +37,257 @@ Route::get('{any?}', function () {
     return view('guest.home');
 })->where('any', '.*');
 
-
 /* 
-MANY TO MANY
 
-- Creare modello 
-php artisan make:model Models/Tag
+    VUE ROUTER (vue router 3)
 
-- Entrare nel modello:
-public function posts() : BelongsToMany { ->importare BelongsTo many
-    return $this->belongsTo Many(Post::class);
+    - npm install vue-router@3
+
+    - creare file route.js e scrivere:
+
+    import Vue from 'vue'
+    import VueRouter from 'vue-router'
+
+    Vue.use(VueRouter)
+
+    - nel file routes.js:
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
+
+// 1. Define route components.
+
+import Home from './Pages/Home'
+import About from './Pages/About'
+import About from './Pages/Posts'
+// These can be imported from other files
+
+
+// 2. Define some routes
+// Each route should map to a component. The "component" can
+// either be an actual component constructor created via
+// `Vue.extend()`, or just a component options object.
+// We'll talk about nested routes later.
+const routes = [
+    { path: '/', component: Home },
+    { path: '/about', component: About },
+    { path: '/posts', component: Posts }
+]
+
+// 3. Create the router instance and pass the `routes` option
+// You can pass in additional options here, but let's
+// keep it simple for now.
+const router = new VueRouter({
+    mode: 'history',
+    routes // short for `routes: routes`
+})
+
+// 4. Create and mount the root instance.
+// Make sure to inject the router with the router option to make the
+// whole app router-aware.
+export default router;
+// Now the app has started!
+
+- Nel file front.js:
+
+
+require("./bootstrap");
+
+window.Vue = require("vue");
+
+import App from "./views/App";
+import router from './router'
+
+
+
+const app = new Vue({
+    el: "#root",
+    render: (h) => h(App),
+    router,
+});
+
+- in js creare cartella pages 
+- creare file Home.vue
+
+In Home.vue mettere template e script
+
+e nello script scrivere:
+
+export default {
+    name: 'Home'
 }
 
-- Entrare nel modello post
+- nell'html fare h1 con scritto Home
 
-public function tags(): BelongsToMany ->importare 
-{
-    return $this->belongsToMany(Tag::class);
-}
+- Copiare file Home.vue e chimarlo About.vue
 
-- php artisan make:migration create_tags_table (creare migrazione tabella tags)
+- Sostituire le varie voci dell'export
 
-- Entrare nella migrazione:
+- Fare uguale per Posts.vue
 
-$table->string('name', 100)->unique();
-$table->string('slug', 150)
+- Nel file App.vue copiare template e spostarli in Pages.vue, anche tag script (modificare nome componente da App a Post)
+- Cancellare tutte i metodi e lasciare solo export
 
-- php artisan migrate
+- Lanciare compilazione npm run watch
 
-- php srtisan make:seeder TagSeeder
+- in App.vue fare menu navigazione da home.blade.php togliamo menu di navigazione e la incollo in App.vue in alto
+- Sostituire i link con componenti router-link, usare v-bind :to {name: 'home'} -> è un oggetto non moustache
 
-- Entrare nel seeder (importare Str, importare modello Tag)
+- Nel file router aggiungere nomi nei componenti es: name : 'home'
 
- $tags = ['coding', 'laravel', 'css', 'Js', 'vue', 'sequel'];
+- Nel bottone togliere graffe e lasciare solo il testo
 
-        foreach ($tags as $tag) {
-            $new_tag = new tag();
-            $new_tag->name = $tag;
-            $new_tag->slug = Str::slug($new_tag->name);
-            $new_tag->save();
-        }
+- Togliere log-in e autenticazione
 
-- php artisan db:seed --class=TagSeeder
+- Fare struttura dati :
 
-- php artisan tin
-Tag::all
-exit
+data(){
+    return {
+        menu_items: [
+            {
+                route-name: 'home',
+                route_text: 'Home'
+            },
 
-- Creare la tabella pivot:
-php artisan make:migration create_post_tag_table
-
-Entrare nella migrazione(metodo up):
-$table->unsignedBigInteger('post_id')->nullable();
-$table->foreign('post_id)->references('id)->on('posts')->cascadeOnDelete();
-$table->unsignedBigInteger('tag_id')->nullable();
-$table->foreign('tag_id)->references('id)->on('tags')->cascadeOnDelete();
-
--php artisan migrate
-
-- php artisan ti
-$post = Post::find(18)
-
-$tag = Tag::find(5)
-
-$tag->posts()->attach($post->id) (oppure inserire numero del post nelle parentesi di attach)
-
-$tag->posts
-
-$tag->posts()->sync([1,2,3])
-$tag->posts()->detach()
-
-- Entrare nel PostController
-
-passare la lista dei tag -> importare modello Tag
-$tags = Tag::all()
-passarli tramite compact
-
-- Entrare nella view create:
-fare un tag select
-
-bs5 multi-select
-
-for tags name tags[] id tags ara label tags
-<option value "" disabled>Select Tags </option>
-forelse($tags as $tag)
-<option value="{{$tag->id}}>{{$tag->name}}</option>
-@empty
-<option value="">No Tags</option>
-@endforelse
-
-- Entrare nel post controller
-
-metodo store
-
-$new_post = Post::create($val_data);
-$new_post->tags()->attach($request->tags);
-
-- Mostrare tags nello show di post
-
-aggiungere div tags
-@if(count($post->tags >0 ))
-    strong Tags:
-    @foreach($post->tags as $tag)
-    span #{{$tag->name}}
-    @endforeach
-@else
-span N/A
-@endif
-
-- Validazione tags nel PostRequest
-'tags' => [exists:tags,id],   RISOLVERE BUG
-
-- Aggiungere select all'edit
-
-bs5 multi-select
-
-for tags name tags[] id tags ara label tags
-<option value "" disabled>Select Tags </option>
-forelse($tags as $tag)
-<option value="{{$tag->id}}>{{$tag->name}}</option>
-@empty
-<option value="">No Tags</option>
-@endforelse
-
-- Passare tags nel metodo edit con il compact
-
-- Aggiunger old nell'edit
-
-
-@if($errors->any())
-<option value"{{$tag->id}}" {{in_array($tag->id, old('tags)) ? 'selected' : ''}}> {{$tag->name}} >/option>
-@else
-<option value"{{$tag->id}}" {{$post->tags->contains($tag->id)) ? 'selected' : ''}}> {{$tag->name}} >/option>
-@endif
-
-- Validare tags nel metodo update
-
-'tags' => 'exists:tags,id'
-
-- Sync tags
-
-$post->tags->sync($request->tags);
-
-- IMPLEMENTARE CRUD PER I TAGS
-
-- php artisan make:controller Admin/TagController -rm App/Models/Tag
-
-- Metodo index
-
-$tags = Tag::all();
-return view('admin.tags.index, compact('tags))
-
-- Creare le rotte
-
-Route::resource('tag', 'tagController')->parameters([
-        'tag' => 'tag:slug'
-    ])->except(['show', 'create', 'edit']);
-
-- crare view in admin
-
-- Copiare html da index categories
-
--Nel tag controller copiare validazione e metodo store da conroller categories
-
-- Copiare update e destroy da categories
-
-- METTERE IN RELAZIONE UTENTI E POST
-
-- User Model :
-
-public function posts(): HasMany -> importare
-{
-    return $this->hasMany(Post::class)
-}
-
-- User Post
-
-public function user() : BelongsTo
-{
-    return $this->belongsTo(User::class)
-
-}
-
-- php artisan make:migration add_user_id_to_posts_table
-
-- entrare nella migrazione metodo up
-$table->unsigendBigInteger('user_id')->nullable()->after('id);
-$table->foreign('user_id')->reference('id')->on('user')->onDelete('set null');
-
--metodo down
-$table->dropForeign('posts_users_id_foreign');
-$table->dropColumn('user_id');
-
-- php artisan migrate
-
-- spostare User all'interno di Models e cambiare namespace
-modifcare namespace nella registrazione App\Models\User
-
-- associare post a noi stessi
-php artisan ti
-
-User::all()
-
-Post::all()
-
-$user_one_posts = Post::where('id', '<', 20)->get()
-$user_two_posts = Post::where('id', '>', 20)->get()
-
-$user_one = User::find(1)
-$user_tow = User::find(2)
-
-$user_one->posts 
-
-
-
-test
-
-
-    FILE STORAGE
-
-- entrare in config>filesystem 
-- modificare in public
-- tutte le immagine verranno caricate in storage>app>public 
-- Fare link simbolico tra public e storage : php artisan storage:link
-- Entrare nel file create dei post: cambiare l'input type in file ed eliminare l'old
-- nel form aggiungere attributo enctype="multipart/form-data"
-- nel metodo store verificare se la richiesta contiene il file, validare il file, salvarlo nel filesystem, recuperare la path,passare la path all'array di dati validati per il salvataggio:
-    
-    //ddd($request->hasFile('cover_image')); OPZIONE 1
-    
-    OPZIONE 2
-    if(array_key_exists('cover_image', $request->all())){
-        //valido il file
-        $request->validate([
-            'cover_image' => 'nullable|image|max:50'
-        ]);
-        //Lo salvo nel file system
-        ddd($request->all());
-        $path = Storage::put('post_images', $request->cover_image);
-        //recupero il percorso
-        //ddd($path);
-        //passare la path all'array di dati validati per il salvataggio:
-    
-        $val_data['cover_image'] = $path;
+             {
+                route-name: 'about',
+                route_text: 'About,
+            },
+             {
+                route-name: 'posts',
+                route_text: 'Posts'
+            },
+        ]
+        ]
+        ]
     }
+}
 
-    //ddd($val_data);
+fare ciclo v-for nell' li: item in menu_items
+<router-link class="nav-link" :to{name: item.route_name}>{{item.route_text}}</router-link>
 
-    - Entrare nella view index per trasformare link allimmagine:
-        {{asset('storage/' . $post->cover_image)}}
+- Stilizzare pagina about:
 
-    - Entrare nella view show e ripetere operazione
+Jumbo default
 
-    IMPLEMENTARE METODO EDIT
+nel p scrivere un lorem 10
 
-    - Entrare nella view edit
+fare un div con content e lorem 500
 
-    - Modificare input in file ed elimnare value
+- Fare pagina Home:
 
-    - nell'img {{asset('storage/' . $post->cover_image)}}
+Jumbotron Default Boolpress
+nel p lorem 10
 
-    - nel form aggiungere attributo enctype="multipart/form-data"
+Togliere more info
 
-    VALIDAZIONE NEL POSTCONTROLLER
-    
-    if(array_key_exists('cover_image', $request->all())){
-        //valido il file
-        $request->validate([
-            'cover_image' => 'nullable|image|max:50'
-        ]);
-        //Lo cancello dal file system
-        Storage::delete($post->cover_image);
+Fare section con classe recent articles
 
-        //ddd($request->all());
-        $path = Storage::put('post_images', $request->cover_image);
-        //recupero il percorso
-        //ddd($path);
+Metter containern (h2 recent articles)con riga colonna e card
 
-        //passare la path all'array di dati validati per il salvataggio:
-        $val_data['cover_image'] = $path;
+- Fare chiamata Ajax:
+
+data() {
+    return {
+        posts: '',
     }
+},
 
-    //ddd($val_data);
+mounted() {
+    axios.get('/api/posts').then(response => {
+        console.log)(response)
+        const posts = response.data.data
+        this.posts = posts.slice(0, 4)
+    }).catch(e => {
+        console.error(e)
+    })
+}
 
+- ciclare le colonne:
+v-for="post in posts" :key=""post.id
 
-    IMPLEMENTARE METODO DELETE
+img :src="'storage/ + post.covr_image'"
+card-body 
+p {{post.content.slice(0, 200) + '....'}}
 
-     Storage::delete($post->cover_image);
-     $post->delete();
+a href="" Read more
 
-     return ..........
+agiubger pulsante:
 
+div cllass read_more
 
-     INVIO DELLE MAIL
-
-     - Andare nel file .env e incollare i dati da mailtrap.io
-
-     - Stoppare server e riavviarlo
-
-     - Creare oggetto mailable: php artisan make:mail NewPostCreated
-
-     - Cartella App>Mail passare:
-
-     $public $post;
-
-     nel costruttore
-     $this->post = $post
-
-     nella build
-
-     return $this
-     ->from('example.com')
-     ->subject('A new post created')
-     ->view('mail.posts-created')
-
-     - Nelle views creare cartalla mail
-     - Cartella posts
-     - File created.blade.php
-     - Mettere html con h1
-        p con strong title: {{$post->title}}          
-     
-     - Entrare nel post controller
-
-     - Nel metodo store
-
-     return new NewPostcreated($new_post)->render(); ANTEPRIMA EMAIL
-
-     - Entrare nel post controller e inviare mail
-
-     Mail::to($request->user())->send(NewPostcreated($new_post));
-
-     OPPURE
-
-     Mail::to('test@example.com')->send(NewPostcreated($new_post));
-
-     FARE NUOVA MAILABLE APPROVAZIONE AMMINISTRATORE
-
-     - php artisan make mailable PostUpdatedAdminMessage --markdown=mail.markdown.admin-postupdated
-
-     - Entrare in views>mail>markdown e inserire corpo della mail
-
-     - Entrare nel PostUpdated
-     protected $post;
-
-     nel costruttore 
-     $this->post = $post;
-
-     nel build 
-     return $this 
-     ->markdown('mail.markdown.admin-postupdated')
-     ->with([
-        'postSlug'  => $this->post->slug,
-        'postUrl' => env('APP_URL') . '/posts/' . $this->post->slug
-     ])
-
-     - Nel metodo updated
-
-     //return (new PostUpdatedAdminMessage($post))->render();
-
-     Mail::to('admin@boolpress.it')->send(new PostUpdatedAdminMessage($post));
-
-     - Creare rotta
-     Route::get('mailable', function(){
-        $post = Post::findOrFail(1);
-
-        return new PostUpdatedAdminMessage($post);
-     })
+router-link class btn btn-primary :to="{{ name: 'posts'}}"
 
 
-     ADMIN RULES
+ROTTE DINAMICHE
 
-     nel metodo index 
-     $posts = Auth::user()->posts;
+- in route.js aggiungere oggetto:
+{
+    path: '/posts/:slug',
+    name: 'post',
+    component: Post
+}
 
+- creare file Post.vue
 
+template con h1 route oper vedere se funziona {{$route.params.slug}}
 
+aggiungere script
+
+export default {
+    name: 'Post'
+}
+
+- nel read more aggiungere to:{name: 'post', params: {slug: post.slug}}
+
+Fare chiamata ajax per singolo post
+
+- entrare in api.php
+Route::get('posts/{post:slug}', 'API/PostController@show');
+
+- Nel post controller fare funzione show 
+$post = Post::with['tags', 'category', 'user']where('slug', $slug)->first();
+
+return $post
+
+- entrare nel componente post
+
+data() {
+    return {
+        post:'',
+    }
+},
+
+mounted(){
+    axios.get('api/posts/' + this.$route.params.slug).then(response => {
+        //console.log(response.data)
+        this.post = response.data
+    }).catch(e => {
+        console.error(e)
+    })
+}
+
+- Nell'html cancellare h1
+
+div classe single page
+
+img :src"'/storage/' + post.cover_image" :alt="post.title"
+h1 {{post.title}}
+p {{post.content}} {{post.category.name}} 
+
+div tags v-if"post.tags.length > 0"
+ul
+li v-for="tag in post.tags"  {{tag.name}}
+
+div class no.tags v-else
+strong Tags: N/A
+
+<div class="author" v-if="post.user" >
+  strong Author: {{post.user.name}}
+</div>
 
 
 
 
 */
-
